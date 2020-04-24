@@ -1,0 +1,33 @@
+---
+- name: Add ufw rule for ssh
+  ufw:
+    rule: allow
+    port: '22'
+
+- name: Enable ufw
+  ufw:
+   state: enabled
+
+- name: Disable timesyncd
+  command: timedatectl set-ntp off
+
+- name: Install ntp
+  apt:
+    name: ntp
+    state: present
+    update_cache: yes
+  tags: ntp
+
+- name: Configure ntp file
+  template:
+    src: ntp.conf.j2
+    dest: /etc/ntp.conf
+  tags: ntp
+  notify: restart ntp
+
+- name: Start the ntp service
+  service:
+    name: ntp
+    state: started
+    enabled: yes
+  tags: ntp

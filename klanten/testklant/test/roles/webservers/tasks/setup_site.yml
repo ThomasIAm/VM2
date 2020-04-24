@@ -1,0 +1,22 @@
+---
+- name: Copy config file
+  copy:
+    src: files/site.conf
+    dest: /etc/apache2/sites-available/000-default.conf
+
+- name: Enable configuration
+  file:
+    src: /etc/apache2/sites-available/000-default.conf
+    dest: /etc/apache2/sites-enabled/000-default.conf
+    state: link
+
+- name: Copy index.html
+  template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+    mode: 0644
+
+- name: Restart Apache
+  service:
+    name: apache2
+    state: restarted
