@@ -1,2 +1,6 @@
 [webservers]
 testklant-test-web01 ansible_host=127.0.0.1 ansible_port=2222
+testklant-test-web02 ansible_host=127.0.0.1 ansible_port=2222 become=true
+
+[loadbalancers]
+testklant-test-lb01 ansible_host=127.0.0.1 ansible_port=2222

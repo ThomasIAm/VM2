@@ -1,0 +1,7 @@
+---
+- name: Install PHP
+  apt:
+    pkg:
+      - php
+      - libapache2-mod-php
+    state: pres

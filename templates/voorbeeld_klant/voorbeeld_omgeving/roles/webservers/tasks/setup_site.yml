@@ -1,10 +1,5 @@
 ---
-- name: Copy dir config file
-  copy:
-    src: files/dir.conf
-    dest: /etc/apache2/mods-enabled/dir.conf
-
-- name: Copy site config file
+- name: Copy config file
   copy:
     src: files/site.conf
     dest: /etc/apache2/sites-available/000-default.conf
