@@ -17,8 +17,8 @@
 
 - name: Copy index.html
   template:
-    src: index.html.j2
-    dest: /var/www/html/index.html
+    src: index.php.j2
+    dest: /var/www/html/index.php
     mode: 0644
 
 - name: Restart Apache

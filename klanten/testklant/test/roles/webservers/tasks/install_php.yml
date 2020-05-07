@@ -4,4 +4,4 @@
     pkg:
       - php
       - libapache2-mod-php
-    state: pres
+    state: present

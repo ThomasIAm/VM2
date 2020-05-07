@@ -10,5 +10,10 @@
 		<p>If you can see this, Ansible succesfully installed apache2.</p>
 
 		<p>Running on {{ inventory_hostname }}</p>
+
+		<?php
+		echo(data("F d, Y h:i:s A", time()));
+		phpinfo();
+		?>
 	</body>
 </html>

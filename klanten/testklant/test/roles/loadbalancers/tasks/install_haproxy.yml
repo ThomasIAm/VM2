@@ -1,4 +1,12 @@
 ---
 - name: Install HAProxy
   apt:
-    name: proxy
+    name: "haproxy"
+    state: present
+    update_cache: yes
+
+- name: Check if HAProxy is working
+  command: haproxy -v
+  register: haproxystatus
+  failed_when: "'version' not in haproxystatus.stdout"
+  changed_when: false
