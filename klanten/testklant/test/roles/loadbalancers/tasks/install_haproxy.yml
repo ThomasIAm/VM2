@@ -10,3 +10,8 @@
   register: haproxystatus
   failed_when: "'version' not in haproxystatus.stdout"
   changed_when: false
+
+- name: Add ufw rule for HAProxy
+  ufw:
+    rule: allow
+    port: '80'

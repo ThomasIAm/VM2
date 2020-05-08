@@ -12,7 +12,7 @@
 		<p>Running on {{ inventory_hostname }}</p>
 
 		<?php
-		echo(data("F d, Y h:i:s A", time()));
+		echo(date("F d, Y h:i:s A", time()));
 		phpinfo();
 		?>
 	</body>
