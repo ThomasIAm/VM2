@@ -33,6 +33,8 @@ try {
 
 		<p>Running on {{ inventory_hostname }}</p>
 
+		<?php echo "PHP is working" ?>
+
 		<p>Image from database:</p>
 		<img src="<?php echo $pdo->query("select url from test")->fetch()['url'] ?>">
 	</body>
