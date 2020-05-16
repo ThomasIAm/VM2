@@ -20,7 +20,7 @@ global
 
 defaults
 	log		global
-	mode	http
+	mode	{{ haproxy_mode | mandatory }}
 	option	httplog
 	option	dontlognull
 	timeout	connect	 5000
@@ -34,13 +34,24 @@ defaults
 	errorfile 503 /etc/haproxy/errors/503.http
 	errorfile 504 /etc/haproxy/errors/504.http
 
-frontend site
+{% if haproxy_enable_stats is true %}
+frontend stats
+	bind *:8080
+	stats enable
+	stats uri /stats
+	stats refresh 10s
+	stats admin if TRUE
+	# stats auth user:pass
+{% endif %}
+
+frontend {{ haproxy_app_name | mandatory }}
 	bind *:80
 	option forwardfor
 	default_backend webservers
 
 backend webservers
-	balance roundrobin
-	server testklant-test-web01 10.0.1.11:80 check
-	server testklant-test-web02 10.0.1.12:80 check
+	balance {{ haproxy_algorithm | mandatory }}
+	{% for server in haproxy_backend_servers %}
+	server {{ server.name }} {{ server.ip }}:{{ server.port }} check
+	{% endfor %}
 	option httpchk

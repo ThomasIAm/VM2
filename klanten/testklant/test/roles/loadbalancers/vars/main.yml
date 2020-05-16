@@ -1,0 +1,8 @@
+---
+haproxy_app_name: site
+haproxy_mode: http
+haproxy_enable_stats: true
+haproxy_algorithm: roundrobin
+haproxy_backend_servers:
+  - {name: testklant-test-web01, ip: 10.0.1.11, port: 80}
+  - {name: testklant-test-web02, ip: 10.0.1.12, port: 80}

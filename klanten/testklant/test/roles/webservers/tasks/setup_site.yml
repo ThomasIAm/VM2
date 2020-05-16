@@ -23,18 +23,3 @@
     src: index.php.j2
     dest: /var/www/html/index.php
     mode: 0644
-
-- name: Ensure certs folder exists
-  file:
-    path: /etc/certs/
-    state: directory
-  changed_when: false
-
-# - name: Copy DB SSL certificate
-#   copy:
-#     src: '{{ item }}'
-#     dest: '/etc/certs/{{ item }}'
-#     mode: 0644
-#   with_items:
-#     - cacert.pem
-#     - 

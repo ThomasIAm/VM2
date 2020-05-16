@@ -14,4 +14,7 @@
 - name: Add ufw rule for HAProxy
   ufw:
     rule: allow
-    port: '80'
+    port: '{{ item }}'
+  with_items: 
+    - '80'
+    - '8080'

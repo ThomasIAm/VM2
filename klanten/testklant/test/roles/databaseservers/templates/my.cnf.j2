@@ -3,6 +3,5 @@ user=root
 password='{{ mysql_root_password | mandatory }}'
 
 [mysqld]
-ssl-ca=/etc/certs/cacert.pem
-ssl-cert=/etc/certs/server-cert.pem
-ssl-key=/etc/certs/server-key.pem
+!includedir /etc/mysql/conf.d/
+!includedir /etc/mysql/mysql.conf.d/

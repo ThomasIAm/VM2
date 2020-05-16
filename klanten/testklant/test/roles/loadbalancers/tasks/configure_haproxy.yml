@@ -1,6 +1,7 @@
 ---
 - name: Check if default configuration exists
-  stat: path=/etc/haproxy/haproxy.cfg*
+  stat: 
+    path: /etc/haproxy/haproxy.cfg*
   register: haproxydefaultconfig
 
 - name: Rename default configuration
@@ -8,8 +9,8 @@
   when: haproxydefaultconfig.stat.exists
 
 - name: Copy new configuration
-  copy:
-    src: files/haproxy.cfg
+  template:
+    src: haproxy.cfg.j2
     dest: /etc/haproxy/haproxy.cfg
   notify: restart haproxy
 
