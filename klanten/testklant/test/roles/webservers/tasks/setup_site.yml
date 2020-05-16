@@ -3,25 +3,38 @@
   copy:
     src: files/dir.conf
     dest: /etc/apache2/mods-enabled/dir.conf
+  notify: restart apache
 
 - name: Copy site config file
   copy:
     src: files/site.conf
     dest: /etc/apache2/sites-available/000-default.conf
+  notify: restart apache
 
 - name: Enable configuration
   file:
     src: /etc/apache2/sites-available/000-default.conf
     dest: /etc/apache2/sites-enabled/000-default.conf
     state: link
+  notify: restart apache
 
-- name: Copy index.html
+- name: Copy index.php
   template:
     src: index.php.j2
     dest: /var/www/html/index.php
     mode: 0644
 
-- name: Restart Apache
-  service:
-    name: apache2
-    state: restarted
+- name: Ensure certs folder exists
+  file:
+    path: /etc/certs/
+    state: directory
+  changed_when: false
+
+# - name: Copy DB SSL certificate
+#   copy:
+#     src: '{{ item }}'
+#     dest: '/etc/certs/{{ item }}'
+#     mode: 0644
+#   with_items:
+#     - cacert.pem
+#     - 

@@ -45,6 +45,18 @@ Vagrant.configure("2") do |config|
     end
   end
 
+  config.vm.define "testklant-test-db01" do |db01_config|
+    db01_config.vm.box = "ubuntu/bionic64"
+    db01_config.vm.hostname = "testklant-test-db01"
+    db01_config.vm.network "private_network", ip: "10.0.1.21"
+    db01_config.vm.provision "file", source: "testklant-test-id_rsa.pub", destination: "~/.ssh/authorized_keys"
+    db01_config.vm.provider "virtualbox" do |vb|
+      vb.memory = "512"
+      vb.gui = false
+      vb.name = "testklant-test-db01"
+    end
+  end
+
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.

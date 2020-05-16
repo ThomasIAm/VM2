@@ -19,3 +19,10 @@
 
   roles:
     - loadbalancers
+
+- name: configure and deploy the databaseservers
+  hosts: databaseservers
+  become: true
+
+  roles:
+    - databaseservers
