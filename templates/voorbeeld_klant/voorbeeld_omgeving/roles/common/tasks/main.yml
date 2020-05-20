@@ -8,9 +8,6 @@
   ufw:
    state: enabled
 
-- name: Disable timesyncd
-  command: timedatectl set-ntp off
-
 - name: Install ntp
   apt:
     name: ntp
@@ -18,16 +15,18 @@
     update_cache: yes
   tags: ntp
 
+- name: Determine if timesyncd is enabled
+  register: timesyncdstatus
+  command: timedatectl status
+  changed_when: false
+
+- name: Disable timesyncd
+  command: timedatectl set-ntp off
+  when: "'systemd-timesyncd.service active: yes' in timesyncdstatus.stdout"
+
 - name: Configure ntp file
   template:
     src: ntp.conf.j2
     dest: /etc/ntp.conf
   tags: ntp
   notify: restart ntp
-
-- name: Start the ntp service
-  service:
-    name: ntp
-    state: started
-    enabled: yes
-  tags: ntp

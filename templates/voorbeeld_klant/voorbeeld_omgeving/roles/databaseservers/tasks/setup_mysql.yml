@@ -1,0 +1,91 @@
+---
+- name: Copy MySQL configuration
+  template:
+    src: my.cnf.j2
+    dest: '/etc/mysql/my.cnf'
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart mysql
+
+- name: Enable MySQL
+  service:
+    name: 'mysql'
+    state: started
+    enabled: 'yes'
+
+- name: Copy .my.cnf
+  template:
+    src: '.my.cnf.j2'
+    dest: '/root/.my.cnf'
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: Set root password
+  mysql_user:
+    name: root
+    host: '{{ item }}'
+    password: '{{ mysql_root_password | mandatory }}'
+    state: present
+  with_items:
+    - '::1'
+    - '127.0.0.1'
+    - 'localhost'
+  no_log: true
+
+- name: Copy database dump file
+  copy:
+    src: test.sql
+    dest: /tmp
+
+- name: Restore vm2 database
+  mysql_db:
+    name: vm2
+    state: import
+    target: /tmp/test.sql
+
+- name: Create web user
+  mysql_user:
+    name: web
+    host: '{{ item }}'
+    password: '{{ mysql_web_password | mandatory }}'
+    priv: 'vm2.test:SELECT'
+  with_items:
+    - '10.0.1.11'
+    - '10.0.1.12'
+    - 'localhost'
+    - '127.0.0.1'
+    - '::1'
+  no_log: true
+
+- name: Remove test database
+  mysql_db:
+    name: test
+    state: absent
+
+- name: Remove anonymous users
+  mysql_user:
+    name: ''
+    state: absent
+    host_all: yes
+  no_log: true
+
+- name: Bind to all interfaces
+  lineinfile:
+    path: /etc/mysql/mysql.conf.d/mysqld.cnf
+    regexp: '^bind-address'
+    line: bind-address = 0.0.0.0
+  notify: restart mysql
+
+- name: Check if SSL is enabled
+  mysql_info:
+    login_user: root
+    filter: settings
+  register: ssl
+  failed_when: >
+    ('have_openssl:\": \"\"' in ssl.settings) or
+    ('have_ssl:\": \"\"' in ssl.settings) or
+    ('ssl_ca:\": \"\"' in ssl.settings) or
+    ('ssl_cert:\": \"\"' in ssl.settings) or
+    ('ssl_key:\": \"\"' in ssl.settings)

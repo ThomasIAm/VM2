@@ -1,22 +1,25 @@
 ---
-- name: Copy config file
+- name: Copy dir config file
+  copy:
+    src: files/dir.conf
+    dest: /etc/apache2/mods-enabled/dir.conf
+  notify: restart apache
+
+- name: Copy site config file
   copy:
     src: files/site.conf
     dest: /etc/apache2/sites-available/000-default.conf
+  notify: restart apache
 
 - name: Enable configuration
   file:
     src: /etc/apache2/sites-available/000-default.conf
     dest: /etc/apache2/sites-enabled/000-default.conf
     state: link
+  notify: restart apache
 
-- name: Copy index.html
+- name: Copy index.php
   template:
-    src: index.html.j2
-    dest: /var/www/html/index.html
+    src: index.php.j2
+    dest: /var/www/html/index.php
     mode: 0644
-
-- name: Restart Apache
-  service:
-    name: apache2
-    state: restarted

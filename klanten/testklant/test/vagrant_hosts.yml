@@ -1,0 +1,16 @@
+- name: testklant-test-web01
+  os: "ubuntu/bionic64"
+  ip: 10.0.1.11
+  ram: 512
+- name: testklant-test-web02
+  os: "ubuntu/bionic64"
+  ip: 10.0.1.12
+  ram: 512
+- name: testklant-test-lb01
+  os: "ubuntu/bionic64"
+  ip: 10.0.1.10
+  ram: 512
+- name: testklant-test-db01
+  os: "ubuntu/bionic64"
+  ip: 10.0.1.21
+  ram: 512
