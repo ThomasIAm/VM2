@@ -2,3 +2,5 @@
 *.log
 .config
 *.sublime-workspace
+/klanten/testklant/dev
+.phedlog
