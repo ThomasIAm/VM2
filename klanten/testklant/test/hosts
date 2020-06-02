@@ -1,9 +1,0 @@
-[webservers]
-testklant-test-web01 ansible_host=10.0.1.11
-testklant-test-web02 ansible_host=10.0.1.12
-
-[loadbalancers]
-testklant-test-lb01 ansible_host=10.0.1.10
-
-[databaseservers]
-testklant-test-db01 ansible_host=10.0.1.21

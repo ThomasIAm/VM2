@@ -17,9 +17,3 @@
     dest: /etc/apache2/sites-enabled/000-default.conf
     state: link
   notify: restart apache
-
-- name: Copy index.php
-  template:
-    src: index.php.j2
-    dest: /var/www/html/index.php
-    mode: 0644

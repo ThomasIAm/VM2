@@ -4,5 +4,5 @@ haproxy_mode: http
 haproxy_enable_stats: true
 haproxy_algorithm: roundrobin
 haproxy_backend_servers:
-  - {name: testklant-test-web01, ip: 10.0.1.11, port: 80}
-  - {name: testklant-test-web02, ip: 10.0.1.12, port: 80}
+  - { name: '{{ hosts.web01.name }}', ip: '{{ hosts.web01.ip }}', port: 80 }
+  - { name: '{{ hosts.web02.name }}', ip: '{{ hosts.web02.ip }}', port: 80 }

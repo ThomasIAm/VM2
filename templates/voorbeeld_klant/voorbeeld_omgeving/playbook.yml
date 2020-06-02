@@ -12,3 +12,17 @@
 
   roles:
     - webservers
+
+- name: configure and deploy the loadbalancers
+  hosts: loadbalancers
+  become: true
+
+  roles:
+    - loadbalancers
+
+- name: configure and deploy the databaseservers
+  hosts: databaseservers
+  become: true
+
+  roles:
+    - databaseservers
