@@ -1,16 +1,16 @@
 ---
 - name: Install apache
   apt:
-    name: "apache2"
+    name: 'apache2'
     state: present
     update_cache: yes
 
-- name: add ufw rule for apache2
+- name: Add ufw rule for apache2
   ufw:
     rule: allow
     port: '80'
 
-- name: apache service state
+- name: Apache service state
   service:
     name: apache2
     state: started

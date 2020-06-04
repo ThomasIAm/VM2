@@ -34,26 +34,12 @@
     - 'localhost'
   no_log: true
 
-- name: Copy database dump file
-  copy:
-    src: test.sql
-    dest: /tmp
-
-- name: Restore vm2 database
-  mysql_db:
-    name: vm2
-    state: import
-    target: /tmp/test.sql
-
 - name: Create web user
   mysql_user:
     name: web
     host: '{{ item }}'
     password: '{{ mysql_web_password | mandatory }}'
-    priv: 'vm2.test:SELECT'
   with_items:
-    - '10.0.1.11'
-    - '10.0.1.12'
     - 'localhost'
     - '127.0.0.1'
     - '::1'

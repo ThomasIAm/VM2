@@ -1,8 +1,8 @@
 <?php
-$host = "{{ hosts.db01.ip }}";
-$db = "{{ mysql_db }}";
-$user = "{{ mysql_user }}";
-$pass = "{{ mysql_web_password }}!";
+$host = "{{ hostvars['testklant-test-db01'].ansible_enp0s8.ipv4.address }}";
+$db = "{{ mysql_db | mandatory }}";
+$user = "{{ mysql_user | mandatory }}";
+$pass = "{{ mysql_web_password | mandatory }}";
 
 $dsn = "mysql:host=$host;dbname=$db";
 $options = [
@@ -22,20 +22,22 @@ try {
 ?>
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Ansible Application</title>
-	</head>
 
-	<body>
-		<a href="http://{{ ansible_enp0s8.ipv4.address }}/index.php">Homepage</a>
-		<h1>apache2, configured by Ansible</h1>
-		<p>If you can see this, Ansible succesfully installed apache2.</p>
+<head>
+	<title>Ansible Application</title>
+</head>
 
-		<p>Running on {{ inventory_hostname }}</p>
+<body>
+	<a href="http://{{ ansible_enp0s8.ipv4.address }}/index.php">Homepage</a>
+	<h1>apache2, configured by Ansible</h1>
+	<p>If you can see this, Ansible succesfully installed apache2.</p>
 
-		<?php echo "PHP is working" ?>
+	<p>Running on {{ inventory_hostname }}</p>
 
-		<p>Image from database:</p>
-		<img src="<?php echo $pdo->query("select url from test")->fetch()['url'] ?>">
-	</body>
+	<?php echo "PHP is working" ?>
+
+	<p>Image from database:</p>
+	<img src="<?php echo $pdo->query("select url from test")->fetch()['url'] ?>">
+</body>
+
 </html>

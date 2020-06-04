@@ -1,6 +1,6 @@
 ---
 - name: Check if default configuration exists
-  stat: 
+  stat:
     path: /etc/haproxy/haproxy.cfg*
   register: haproxydefaultconfig
 

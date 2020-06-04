@@ -36,22 +36,21 @@ defaults
 
 {% if haproxy_enable_stats is true %}
 frontend stats
-	bind *:8080
+	bind *:{{ haproxy_stats_port | mandatory }}
 	stats enable
-	stats uri /stats
+	stats uri {{ haproxy_stats_uri | mandatory }}
 	stats refresh 10s
-	stats admin if TRUE
-	# stats auth user:pass
+	stats auth {{ haproxy_stats_user | mandatory }}:{{ haproxy_stats_pass | mandatory }}
 {% endif %}
 
 frontend {{ haproxy_app_name | mandatory }}
-	bind *:80
+	bind *:{{ haproxy_frontend_port | mandatory }}
 	option forwardfor
 	default_backend webservers
 
 backend webservers
 	balance {{ haproxy_algorithm | mandatory }}
-	{% for server in haproxy_backend_servers %}
-	server {{ server.name }} {{ server.ip }}:{{ server.port }} check
+	{% for host in groups.webservers %}
+	server {{ host }} {{ hostvars[host].ansible_enp0s8.ipv4.address }}:80 check
 	{% endfor %}
 	option httpchk

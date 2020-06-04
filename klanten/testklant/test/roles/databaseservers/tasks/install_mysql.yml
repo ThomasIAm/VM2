@@ -16,4 +16,4 @@
 - name: Add UFW rule for MySQL
   ufw:
     rule: allow
-    port: '3306'
+    port: '{{ mysql_port | mandatory }}'

@@ -1,8 +1,16 @@
 ---
+haproxy_stats_port: 8080
+haproxy_stats_uri: /stats
+haproxy_stats_user: admin
+haproxy_stats_pass: !vault |
+  $ANSIBLE_VAULT;1.1;AES256
+  64363431383633386264613333376163383163333266396563623966633763666163663730663936
+  6436333734663536656462623137373962353433663233350a646265356162343435346163336235
+  61393961393332613333353936303935646330653930646166643132373663306134653564353732
+  6466636363646438650a313361376139316531666361303131616336623830396332653730663138
+  3664
 haproxy_app_name: site
+haproxy_frontend_port: 80
 haproxy_mode: http
 haproxy_enable_stats: true
 haproxy_algorithm: roundrobin
-haproxy_backend_servers:
-  - { name: '{{ hosts.web01.name }}', ip: '{{ hosts.web01.ip }}', port: 80 }
-  - { name: '{{ hosts.web02.name }}', ip: '{{ hosts.web02.ip }}', port: 80 }

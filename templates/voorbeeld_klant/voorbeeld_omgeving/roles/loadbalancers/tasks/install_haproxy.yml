@@ -1,7 +1,7 @@
 ---
 - name: Install HAProxy
   apt:
-    name: "haproxy"
+    name: 'haproxy'
     state: present
     update_cache: yes
 
@@ -15,6 +15,6 @@
   ufw:
     rule: allow
     port: '{{ item }}'
-  with_items: 
+  with_items:
     - '80'
     - '8080'
