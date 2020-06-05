@@ -5,10 +5,17 @@
     port: '22'
 
 - name: Enable ufw
+  when: firewall
   ufw:
-   state: enabled
+    state: enabled
+
+- name: Disable ufw
+  when: not firewall
+  ufw:
+    state: disabled
 
 - name: Install ntp
+  when: custom_ntp
   apt:
     name: ntp
     state: present
@@ -22,9 +29,11 @@
 
 - name: Disable timesyncd
   command: timedatectl set-ntp off
-  when: "'systemd-timesyncd.service active: yes' in timesyncdstatus.stdout"
+  when: "'systemd-timesyncd.service active: yes' in timesyncdstatus.stdout and
+    custom_ntp"
 
 - name: Configure ntp file
+  when: custom_ntp
   template:
     src: ntp.conf.j2
     dest: /etc/ntp.conf

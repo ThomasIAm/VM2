@@ -8,10 +8,15 @@
     mode: '0644'
   notify: restart mysql
 
-- name: Enable MySQL
+- name: Start MySQL
   service:
     name: 'mysql'
     state: started
+
+- name: Enable MySQL
+  when: mysql_enable
+  service:
+    name: 'mysql'
     enabled: 'yes'
 
 - name: Copy .my.cnf
@@ -29,23 +34,35 @@
     password: '{{ mysql_root_password | mandatory }}'
     state: present
   with_items:
-    - '::1'
-    - '127.0.0.1'
-    - 'localhost'
+    - '{{ mysql_root_hosts }}'
   no_log: true
 
-- name: Create web user
+- name: Copy database dump file
+  when: mysql_use_dump
+  copy:
+    src: '{{ mysql_db_file | mandatory }}'
+    dest: /tmp
+
+- name: Restore database
+  when: mysql_use_dump
+  mysql_db:
+    name: '{{ mysql_db_name | mandatory }}'
+    state: import
+    target: '/tmp/{{ mysql_db_file | mandatory }}'
+
+- name: Create non-root user
+  when: mysql_non_root_user
   mysql_user:
-    name: web
+    name: '{{ mysql_non_root_user_name | mandatory }}'
     host: '{{ item }}'
-    password: '{{ mysql_web_password | mandatory }}'
+    password: '{{ mysql_non_root_user_password }}'
+    priv: '{{ mysql_non_root_user_privs | default(none) }}'
   with_items:
-    - 'localhost'
-    - '127.0.0.1'
-    - '::1'
+    - '{{ mysql_non_root_user_hosts }}'
   no_log: true
 
 - name: Remove test database
+  when: mysql_remove_testdb
   mysql_db:
     name: test
     state: absent
@@ -57,14 +74,15 @@
     host_all: yes
   no_log: true
 
-- name: Bind to all interfaces
+- name: Bind to interface(s)
   lineinfile:
     path: /etc/mysql/mysql.conf.d/mysqld.cnf
     regexp: '^bind-address'
-    line: bind-address = 0.0.0.0
+    line: 'bind-address = {{ mysql_bind_addr | mandatory }}'
   notify: restart mysql
 
 - name: Check if SSL is enabled
+  when: mysql_check_ssl
   mysql_info:
     login_user: root
     filter: settings

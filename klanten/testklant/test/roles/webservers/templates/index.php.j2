@@ -1,8 +1,8 @@
 <?php
 $host = "{{ hostvars['testklant-test-db01'].ansible_enp0s8.ipv4.address }}";
-$db = "{{ mysql_db | mandatory }}";
-$user = "{{ mysql_user | mandatory }}";
-$pass = "{{ mysql_web_password | mandatory }}";
+$db = "{{ mysql_db_name | mandatory }}";
+$user = "{{ mysql_non_root_user_name | mandatory }}";
+$pass = "{{ mysql_non_root_user_password | mandatory }}";
 
 $dsn = "mysql:host=$host;dbname=$db";
 $options = [
@@ -28,7 +28,7 @@ try {
 </head>
 
 <body>
-	<a href="http://{{ ansible_enp0s8.ipv4.address }}/index.php">Homepage</a>
+	<a href="http://{{ ansible_enp0s8.ipv4.address }}">Homepage</a>
 	<h1>apache2, configured by Ansible</h1>
 	<p>If you can see this, Ansible succesfully installed apache2.</p>
 

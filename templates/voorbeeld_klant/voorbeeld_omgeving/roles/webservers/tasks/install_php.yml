@@ -1,5 +1,6 @@
 ---
 - name: Install PHP
+  when: install_php
   apt:
     pkg:
       - php
