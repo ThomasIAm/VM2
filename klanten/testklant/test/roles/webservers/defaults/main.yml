@@ -3,3 +3,4 @@ apache_directory_index: 'index.html index.cgi index.php index.pl index.xhtml ind
 install_php: false
 apache_use_repo: https://github.com/muan/hello-world.git
 apache_use_template: false
+apache_virtual_hosts: ''

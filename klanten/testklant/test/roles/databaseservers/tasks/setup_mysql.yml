@@ -56,7 +56,8 @@
     name: '{{ mysql_non_root_user_name | mandatory }}'
     host: '{{ item }}'
     password: '{{ mysql_non_root_user_password }}'
-    priv: '{{ mysql_non_root_user_privs | default(none) }}'
+    priv: '{{ mysql_non_root_user_privs }}'
+    state: present
   with_items:
     - '{{ mysql_non_root_user_hosts }}'
   no_log: true

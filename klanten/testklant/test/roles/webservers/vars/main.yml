@@ -9,5 +9,4 @@ apache_virtual_hosts:
     custom_log: '${APACHE_LOG_DIR}/access.log'
     custom_log_options: combined
 install_php: true
-apache_use_repo: false
 apache_use_template: true

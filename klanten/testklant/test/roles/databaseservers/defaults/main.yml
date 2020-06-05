@@ -15,3 +15,4 @@ mysql_remove_testdb: true
 mysql_remove_anon_users: true
 mysql_bind_addr: 127.0.0.1
 mysql_check_ssl: true
+mysql_non_root_user_privs: '*.*:USAGE'

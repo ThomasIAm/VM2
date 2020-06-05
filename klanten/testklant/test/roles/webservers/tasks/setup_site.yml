@@ -30,16 +30,16 @@
   notify: restart apache
 
 - name: Delete html directory
-  when: apache_use_repo
+  when: apache_use_repo is defined
   file:
     path: /var/www/html
+    state: absent
 
 - name: Copy the code from repository
-  when: apache_use_repo
+  when: apache_use_repo is defined
   git:
     repo: '{{ apache_use_repo }}'
     dest: /var/www/html
-    version: master
 
 - name: Copy index.php
   when: apache_use_template
